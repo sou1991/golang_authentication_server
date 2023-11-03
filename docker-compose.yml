@@ -1,0 +1,11 @@
+version: '3'
+services:
+  outh:
+    image: outh_server
+    build: 
+      context: .
+    tty: true
+    ports:
+      - 8080:80
+    volumes: 
+      - .:/go/src/
