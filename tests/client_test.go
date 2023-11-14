@@ -49,7 +49,7 @@ func TestClient(t *testing.T) {
 			var err error
 			w := httptest.NewRecorder()
 			c, _ := gin.CreateTestContext(w)
-			c.Request, err = http.NewRequest("GET", fmt.Sprintf("/outh2/v2/auth?client_id=%v&response_type=%v", tc.client_id, tc.response_type), nil)
+			c.Request, err = http.NewRequest("GET", fmt.Sprintf("/outh2/v1/auth?client_id=%v&response_type=%v", tc.client_id, tc.response_type), nil)
 
 			if err != nil {
 				t.Error(err)
