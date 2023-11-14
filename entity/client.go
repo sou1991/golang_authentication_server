@@ -2,13 +2,13 @@ package entity
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
+	"log"
 )
 
 // In Memory Data source
 var clients = map[string]string{
-	"client_id": "abcde", "client_secret": "T0F1dGhzZWNyZXRzZXJ2ZXI=",
+	"client_id": "abcde", "client_secret": "hogehogefoookgem=",
 }
 
 type clientAuthParams struct {
