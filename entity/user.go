@@ -20,16 +20,16 @@ type authorizationData struct {
 	Expire time.Time
 }
 
-//In memory data
+// In memory data
 var users = []User{
 	//auth@example.com/passwordを暗号化した値
 	{
 		Email:    "b565fcc69617dde89f5c5d82796ef890",
-		Password: "a52d7fe9d86fe7255ab17ced9e084b0c",
+		Password: "a624f8389727f067e9b89933e4f77d1f",
 	},
 }
 
-//In memory data
+// In memory data
 var authorized []authorizationData
 
 func Authenticate(c *gin.Context) {
@@ -42,16 +42,18 @@ func Authenticate(c *gin.Context) {
 
 	for _, v := range users {
 		if v.Email != encryptUserData(u.Email) || v.Password != encryptUserData(u.Password) {
+			log.Println(encryptUserData(u.Email))
+			log.Println(encryptUserData(u.Password))
 			c.JSON(http.StatusOK, gin.H{"message": "Not Found Account"})
-		}else{
+		} else {
 			t := time.Now()
 			a := authorizationData{Code: "akjd783jek", Expire: t.Add(1 * time.Hour)}
-	
+
 			authorized = append(authorized, a)
-	
+
 			//https://example.com/auth?code={a.Code}
 			log.Println("redirect to client server")
-	
+
 			c.JSON(http.StatusMovedPermanently, gin.H{"message": "redirect to client server"})
 		}
 	}

@@ -1,13 +1,12 @@
 package main
 
 import (
-    "github.com/gin-gonic/gin"
-    "github.com/sou1991/golang_authentication_server/router"
+	"github.com/gin-gonic/gin"
+	"github.com/sou1991/golang_authentication_server/router"
 )
 
-
 func main() {
-    s := gin.Default()
-    router.Router()
-    s.Run("0.0.0.0:80")
+	s := gin.Default()
+	router.Router(s)
+	s.Run("0.0.0.0:80")
 }
