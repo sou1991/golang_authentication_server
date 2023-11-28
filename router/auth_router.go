@@ -12,13 +12,3 @@ func NewAuthRouter(ca controller.Authenticator) Authenticator{
 type authRouter struct{
 	Ca controller.Authenticator
 }
-
-type Authenticator interface{
-	Auth(...*gin.Engine)
-}
-
-func (ar authRouter) Auth(r ...*gin.Engine){
-	r[0].GET("/outh2/v1/auth/login", func(c *gin.Context) {
-		ar.Ca.Auth(c)
-	})
-}
