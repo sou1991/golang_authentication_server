@@ -14,11 +14,11 @@ import (
 
 type authentication struct {
 	name       string
-	params     param
+	params     user
 	statusCode int
 }
 
-type param struct {
+type user struct {
 	email    string
 	password string
 }
@@ -27,14 +27,14 @@ func TestAuth(t *testing.T) {
 	authTests := []authentication{
 		{
 			name:       "Authorization success",
-			params:     param{email: "auth@example.com", password: "password"},
+			params:     user{email: "auth@example.com", password: "password"},
 			statusCode: http.StatusMovedPermanently,
 		},
 	}
 
 	for _, v := range authTests {
 		t.Run(v.name, func(t *testing.T) {
-			u := entity.User{Email: v.params.email, Password: v.params.password}
+			u := entity.authorizationData{Email: v.params.email, Password: v.params.password}
 			byteUser, _ := json.Marshal(u)
 			w := httptest.NewRecorder()
 			c, _ := gin.CreateTestContext(w)
