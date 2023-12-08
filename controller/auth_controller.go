@@ -15,8 +15,13 @@ type authController struct{
 
 type Authenticator interface{
 	Auth(...*gin.Context)
+	Access(...*gin.Context)
 }
 
 func(ac authController) Auth(c ...*gin.Context){
 	ac.Ra.Auth(c[0])
+}
+
+func(ac authController) Access(c ...*gin.Context){
+	ac.Ra.Access(c[0])
 }

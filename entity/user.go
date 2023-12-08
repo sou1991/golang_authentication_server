@@ -1,9 +1,11 @@
 package entity
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
+
 	"crypto/md5"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"net/http"
@@ -16,8 +18,25 @@ type User struct {
 }
 
 type authorizationData struct {
-	Code   string
-	Expire time.Time
+	Uuid         string
+	Code         string
+	Expire       int64
+	ClientId     string
+	ClientSecret string
+}
+
+type AuthorizationParams struct {
+	Code         string `json:"code"`
+	ClientId     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+}
+
+type Response struct {
+	AccessToken Access `json:"access"`
+}
+
+type Access struct {
+	Token string `json:"access_token"`
 }
 
 // In memory data
@@ -30,7 +49,15 @@ var users = []User{
 }
 
 // In memory data
-var authorized []authorizationData
+var authorized = []authorizationData{
+	{
+		Uuid:         "c1a361d61cf839fe79bf6357454a88ae",
+		Code:         "akjd783jek",
+		Expire:       time.Now().Add(1 * time.Hour).Unix(),
+		ClientId:     "abcde",
+		ClientSecret: "hogehogefoookgem",
+	},
+}
 
 func Authenticate(c *gin.Context) {
 	var u User
@@ -42,12 +69,9 @@ func Authenticate(c *gin.Context) {
 
 	for _, v := range users {
 		if v.Email != encryptUserData(u.Email) || v.Password != encryptUserData(u.Password) {
-			log.Println(encryptUserData(u.Email))
-			log.Println(encryptUserData(u.Password))
 			c.JSON(http.StatusOK, gin.H{"message": "Not Found Account"})
 		} else {
-			t := time.Now()
-			a := authorizationData{Code: "akjd783jek", Expire: t.Add(1 * time.Hour)}
+			a := authorizationData{Code: "akjd783jek", Expire: time.Now().Add(1 * time.Hour).Unix()}
 
 			authorized = append(authorized, a)
 
@@ -59,6 +83,43 @@ func Authenticate(c *gin.Context) {
 	}
 }
 
+func SendToken(c *gin.Context) {
+	var a AuthorizationParams
+
+	if err := c.BindJSON(&a); err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad Request"})
+		return
+	}
+
+	for _, v := range authorized {
+		if v.ClientId != a.ClientId || v.ClientSecret != a.ClientSecret {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Bad Request", "reason": "invalid client"})
+			return
+		} else if v.Code == a.Code {
+			//Payload
+			claims := jwt.MapClaims{
+				"user_id": v.Uuid,
+				"exp":     time.Now().Add(1 * time.Hour).Unix(),
+			}
+
+			//HeaderとPayloadを結合
+			t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+			//署名をつける
+			accessToken, _ := t.SignedString([]byte("my_sign"))
+			r := Response{AccessToken: Access{accessToken}}
+
+			c.JSON(http.StatusOK, r)
+			return
+		} else {
+			continue
+		}
+	}
+
+	c.JSON(http.StatusBadRequest, gin.H{"message": "Bad Request"})
+}
+
 func encryptUserData(s string) string {
 	h := md5.New()
 	io.WriteString(h, s)
@@ -66,5 +127,4 @@ func encryptUserData(s string) string {
 	io.WriteString(h, salt)
 
 	return fmt.Sprintf("%x", h.Sum(nil))
-
 }

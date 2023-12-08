@@ -13,8 +13,13 @@ type authRepository struct{}
 
 type Authenticator interface{
 	Auth(...*gin.Context)
+	Access(...*gin.Context)
 }
 
 func (authRepository) Auth(c ...*gin.Context){
 	entity.Authenticate(c[0])
+}
+
+func (authRepository) Access(c ...*gin.Context){
+	entity.SendToken(c[0])
 }
