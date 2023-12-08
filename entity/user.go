@@ -18,7 +18,7 @@ type User struct {
 }
 
 type authorizationData struct {
-	Uuid				string
+	Uuid         string
 	Code         string
 	Expire       int64
 	ClientId     string
@@ -51,7 +51,7 @@ var users = []User{
 // In memory data
 var authorized = []authorizationData{
 	{
-		Uuid:		"c1a361d61cf839fe79bf6357454a88ae",
+		Uuid:         "c1a361d61cf839fe79bf6357454a88ae",
 		Code:         "akjd783jek",
 		Expire:       time.Now().Add(1 * time.Hour).Unix(),
 		ClientId:     "abcde",
