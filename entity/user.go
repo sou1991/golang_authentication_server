@@ -18,8 +18,9 @@ type User struct {
 }
 
 type authorizationData struct {
+	Uuid				string
 	Code         string
-	Expire       time.Time
+	Expire       int64
 	ClientId     string
 	ClientSecret string
 }
@@ -27,7 +28,7 @@ type authorizationData struct {
 type AuthorizationParams struct {
 	Code         string `json:"code"`
 	ClientId     string `json:"client_id"`
-	ClientSecret string `json:"criect_secret"`
+	ClientSecret string `json:"client_secret"`
 }
 
 type Response struct {
@@ -50,8 +51,9 @@ var users = []User{
 // In memory data
 var authorized = []authorizationData{
 	{
+		Uuid:		"c1a361d61cf839fe79bf6357454a88ae",
 		Code:         "akjd783jek",
-		Expire:       time.Now().Add(1 * time.Hour),
+		Expire:       time.Now().Add(1 * time.Hour).Unix(),
 		ClientId:     "abcde",
 		ClientSecret: "hogehogefoookgem",
 	},
@@ -85,6 +87,7 @@ func SendToken(c *gin.Context) {
 	var a AuthorizationParams
 
 	if err := c.BindJSON(&a); err != nil {
+		log.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad Request"})
 		return
 	}
@@ -96,7 +99,7 @@ func SendToken(c *gin.Context) {
 		} else if v.Code == a.Code {
 			//Payload
 			claims := jwt.MapClaims{
-				"user_id": "123",
+				"user_id": v.Uuid,
 				"exp":     time.Now().Add(1 * time.Hour).Unix(),
 			}
 
@@ -124,5 +127,4 @@ func encryptUserData(s string) string {
 	io.WriteString(h, salt)
 
 	return fmt.Sprintf("%x", h.Sum(nil))
-
 }
