@@ -32,11 +32,11 @@ type AuthorizationParams struct {
 }
 
 type Response struct {
-	AccessToken Access `json:"access"`
+	IdToken Access `json:"access"`
 }
 
 type Access struct {
-	Token string `json:"access_token"`
+	IdToken string `json:"id_token"`
 }
 
 // In memory data
@@ -83,7 +83,7 @@ func Authenticate(c *gin.Context) {
 	}
 }
 
-func SendToken(c *gin.Context) {
+func SendIdToken(c *gin.Context) {
 	var a AuthorizationParams
 
 	if err := c.BindJSON(&a); err != nil {
@@ -107,8 +107,8 @@ func SendToken(c *gin.Context) {
 			t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 			//署名をつける
-			accessToken, _ := t.SignedString([]byte("my_sign"))
-			r := Response{AccessToken: Access{accessToken}}
+			idToken, _ := t.SignedString([]byte("my_sign"))
+			r := Response{IdToken: Access{idToken}}
 
 			c.JSON(http.StatusOK, r)
 			return
