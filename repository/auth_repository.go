@@ -21,5 +21,5 @@ func (authRepository) Auth(c ...*gin.Context){
 }
 
 func (authRepository) Access(c ...*gin.Context){
-	entity.SendToken(c[0])
+	entity.SendIdToken(c[0])
 }
