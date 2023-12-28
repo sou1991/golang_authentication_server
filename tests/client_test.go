@@ -1,10 +1,11 @@
 package tests
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sou1991/golang_authentication_server/entity"
 	"github.com/stretchr/testify/assert"
+	
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
