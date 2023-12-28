@@ -31,7 +31,7 @@ type AuthorizationParams struct {
 	ClientSecret string `json:"client_secret"`
 }
 
-type Response struct {
+type response struct {
 	IdToken Access `json:"access"`
 }
 
@@ -108,7 +108,7 @@ func SendIdToken(c *gin.Context) {
 
 			//署名をつける
 			idToken, _ := t.SignedString([]byte("my_sign"))
-			r := Response{IdToken: Access{idToken}}
+			r := response{IdToken: Access{idToken}}
 
 			c.JSON(http.StatusOK, r)
 			return
