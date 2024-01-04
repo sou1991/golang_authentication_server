@@ -12,9 +12,9 @@ func NewClientRepository() ClientChecker{
 }
 
 type ClientChecker interface{
-	CheckClent(...*gin.Context)
+	CheckClent(*gin.Context)
 }
 
-func (ClientRepository) CheckClent(c ...*gin.Context){
-	entity.CheckAvailableClients(c[0])
+func (ClientRepository) CheckClent(c *gin.Context){
+	entity.CheckAvailableClients(c)
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type ClientChecker interface{
-	CheckClent(...*gin.Context)
+	CheckClent(*gin.Context)
 }
 
 type ClientController struct{
@@ -17,6 +17,6 @@ func NewClentController(cr repository.ClientChecker) ClientChecker{
 	return ClientController{Cr: cr}
 }
 
-func (cc ClientController) CheckClent(c ...*gin.Context){
-	cc.Cr.CheckClent(c[0])
+func (cc ClientController) CheckClent(c *gin.Context){
+	cc.Cr.CheckClent(c)
 }
