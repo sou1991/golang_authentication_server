@@ -12,14 +12,14 @@ func NewAuthRepository() Authenticator {
 type authRepository struct{}
 
 type Authenticator interface{
-	Auth(...*gin.Context)
-	Access(...*gin.Context)
+	Auth(*gin.Context)
+	Access(*gin.Context)
 }
 
-func (authRepository) Auth(c ...*gin.Context){
-	entity.Authenticate(c[0])
+func (authRepository) Auth(c *gin.Context){
+	entity.Authenticate(c)
 }
 
-func (authRepository) Access(c ...*gin.Context){
-	entity.SendIdToken(c[0])
+func (authRepository) Access(c *gin.Context){
+	entity.SendIdToken(c)
 }
