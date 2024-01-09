@@ -1,5 +1,8 @@
 # golang_authentication_server
 
+alpineのコンテナ接続
+`dc exec auth /bin/ash`
+
 ### client check
 
 ```
