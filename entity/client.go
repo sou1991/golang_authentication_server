@@ -32,7 +32,7 @@ func CheckAvailableClients(c *gin.Context) {
 	if clients["client_id"] != params.ClientId {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Bad Request", "reason": "missing client id"})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"message": "Succes"})
+		c.JSON(http.StatusOK, gin.H{"message": "Success"})
 	}
 
 	log.Println("return login page")
