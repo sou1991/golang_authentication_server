@@ -5,12 +5,12 @@ import (
 	"github.com/sou1991/golang_authentication_server/repository"
 )
 
-func NewAuthController(ra repository.Authenticator) Authenticator{
-	return authController{Ra: ra}
+func NewAuthController(repo repository.Authenticator) Authenticator{
+	return authController{ra: repo}
 }
 
 type authController struct{
-	Ra repository.Authenticator
+	ra repository.Authenticator
 }
 
 type Authenticator interface{
@@ -19,9 +19,9 @@ type Authenticator interface{
 }
 
 func(ac authController) Auth(c *gin.Context){
-	ac.Ra.Auth(c)
+	ac.ra.Auth(c)
 }
 
 func(ac authController) Access(c *gin.Context){
-	ac.Ra.Access(c)
+	ac.ra.Access(c)
 }

@@ -10,13 +10,13 @@ type ClientChecker interface{
 }
 
 type ClientController struct{
-	Cr repository.ClientChecker
+	cr repository.ClientChecker
 }
 
-func NewClentController(cr repository.ClientChecker) ClientChecker{
-	return ClientController{Cr: cr}
+func NewClentController(repo repository.ClientChecker) ClientChecker{
+	return ClientController{cr: repo}
 }
 
 func (cc ClientController) CheckClent(c *gin.Context){
-	cc.Cr.CheckClent(c)
+	cc.cr.CheckClent(c)
 }
