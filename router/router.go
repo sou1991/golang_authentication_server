@@ -16,14 +16,14 @@ var aro = NewAuthRouter(ca)
 
 func Router(r *gin.Engine) {
 	r.GET("/outh2/v1/auth", func(c *gin.Context) {
-		cro.Cc.CheckClent(c)
+		cro.cc.CheckClent(c)
 	})
 
 	r.POST("/outh2/v1/auth/login", func(c *gin.Context) {
-		aro.Ca.Auth(c)
+		aro.ca.Auth(c)
 	})
 
 	r.POST("/outh2/v1/auth/token", func(c *gin.Context) {
-		aro.Ca.Access(c)
+		aro.ca.Access(c)
 	})
 }
