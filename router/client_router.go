@@ -5,9 +5,9 @@ import (
 )
 
 type clientRouter struct {
-	Cc controller.ClientChecker
+	cc controller.ClientChecker
 }
 
-func NewClientRouter(cc controller.ClientChecker) clientRouter {
-	return clientRouter{Cc: cc}
+func NewClientRouter(ctrl controller.ClientChecker) clientRouter {
+	return clientRouter{cc: ctrl}
 }
