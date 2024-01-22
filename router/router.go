@@ -2,16 +2,16 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sou1991/golang_authentication_server/controller"
-	"github.com/sou1991/golang_authentication_server/repository"
+	ctrl "github.com/sou1991/golang_authentication_server/controller"
+	repo "github.com/sou1991/golang_authentication_server/repository"
 )
 
-var rc = repository.NewClientRepository()
-var cc = controller.NewClentController(rc)
+var rc = repo.NewClientRepository()
+var cc = ctrl.NewClentController(rc)
 var cro = NewClientRouter(cc)
 
-var ra = repository.NewAuthRepository()
-var ca = controller.NewAuthController(ra)
+var ra = repo.NewAuthRepository()
+var ca = ctrl.NewAuthController(ra)
 var aro = NewAuthRouter(ca)
 
 func Router(r *gin.Engine) {
