@@ -6,12 +6,12 @@ import (
 	repo "github.com/sou1991/golang_authentication_server/repository"
 )
 
-var rc = repo.NewClientRepository()
-var cc = ctrl.NewClentController(rc)
+var rc repo.ClientChecker = repo.NewClientRepository()
+var cc ctrl.ClientChecker= ctrl.NewClentController(rc)
 var cro = NewClientRouter(cc)
 
-var ra = repo.NewAuthRepository()
-var ca = ctrl.NewAuthController(ra)
+var ra repo.Authenticator = repo.NewAuthRepository()
+var ca ctrl.Authenticator = ctrl.NewAuthController(ra)
 var aro = NewAuthRouter(ca)
 
 func Router(r *gin.Engine) {
