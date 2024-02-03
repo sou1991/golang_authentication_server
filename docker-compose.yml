@@ -9,3 +9,15 @@ services:
       - 8080:80
     volumes: 
       - .:/go/src/
+  db:
+    image: postgres:9.6
+    ports:
+      - 5432:5432
+    volumes:
+      - db-store:/var/lib/postgresql/data
+    user: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+volumes:
+  db-store:
