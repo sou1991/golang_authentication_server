@@ -7,4 +7,4 @@ WORKDIR /go/src/
 
 COPY . /go/src/
 
-CMD ["air", "-c", ".air.toml"]
+#CMD ["air", "-c", ".air.toml"]
