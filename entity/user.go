@@ -18,11 +18,11 @@ type User struct {
 }
 
 type authorizationData struct {
-	Uuid         string
-	Code         string
-	Expire       int64
-	ClientId     string
-	ClientSecret string
+	uuid         string
+	code         string
+	expire       int64
+	clientId     string
+	clientSecret string
 }
 
 type AuthorizationParams struct {
@@ -51,11 +51,11 @@ var users = []User{
 // In memory data
 var authorized = []authorizationData{
 	{
-		Uuid:         "c1a361d61cf839fe79bf6357454a88ae",
-		Code:         "akjd783jek",
-		Expire:       time.Now().Add(1 * time.Hour).Unix(),
-		ClientId:     "abcde",
-		ClientSecret: "hogehogefoookgem",
+		uuid:         "c1a361d61cf839fe79bf6357454a88ae",
+		code:         "akjd783jek",
+		expire:       time.Now().Add(1 * time.Hour).Unix(),
+		clientId:     "abcde",
+		clientSecret: "hogehogefoookgem",
 	},
 }
 
@@ -71,7 +71,7 @@ func Authenticate(c *gin.Context) {
 		if v.Email != encryptUserData(u.Email) || v.Password != encryptUserData(u.Password) {
 			c.JSON(http.StatusOK, gin.H{"message": "Not Found Account"})
 		} else {
-			a := authorizationData{Code: "akjd783jek", Expire: time.Now().Add(1 * time.Hour).Unix()}
+			a := authorizationData{code: "akjd783jek", expire: time.Now().Add(1 * time.Hour).Unix()}
 
 			authorized = append(authorized, a)
 
@@ -93,13 +93,13 @@ func SendIdToken(c *gin.Context) {
 	}
 
 	for _, v := range authorized {
-		if v.ClientId != a.ClientId || v.ClientSecret != a.ClientSecret {
+		if v.clientId != a.ClientId || v.clientSecret != a.ClientSecret {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "Bad Request", "reason": "invalid client"})
 			return
-		} else if v.Code == a.Code {
+		} else if v.code == a.Code {
 			//Payload
 			claims := jwt.MapClaims{
-				"user_id": v.Uuid,
+				"user_id": v.uuid,
 				"exp":     time.Now().Add(1 * time.Hour).Unix(),
 			}
 
